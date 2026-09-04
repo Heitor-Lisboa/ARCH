@@ -1,6 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 
-
-def index(request):
-    return HttpResponse('<h1>Sistema de estoque - ARCH</h1>')
+def estoque(request):
+    return render(request, 'itens/itens.html')

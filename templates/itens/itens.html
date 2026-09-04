@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCH - Estoque do LabMAKER</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar / Menu Lateral -->
+        <aside class="sidebar">
+            <div class="brand">
+                <h1>ARCH</h1>
+            </div>
+
+            <div class="sidebar-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Procure por abas">
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-house"></i> <span>Menu inicial</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa-solid fa-right-left"></i> <span>Movimentações</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
+                    </li>
+                    <li class="active">
+                        <a href="#"><i class="fa-solid fa-box"></i> <span>Estoque</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
+                    </li>
+                    <li>
+                        <a href= "{% url 'autorizados' %}" ><i class="fa-solid fa-user-shield"></i> <span>Autorizados</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+                <h2 class="page-title">Estoque do LabMAKER</h2>
+                <div class="user-profile">
+                    <button class="btn-icon" title="Notificações"><i class="fa-regular fa-bell"></i></button>
+                    <div class="avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+            </header>
+
+            <section class="content-toolbar">
+                <div class="action-buttons">
+                    <button class="btn btn-download">
+                        <i class="fa-solid fa-download"></i> Baixar tabela
+                    </button>
+                </div>
+
+                <div class="search-box-container">
+                    <div class="search-input-wrapper">
+                        <i class="fa-solid fa-bars filter-icon"></i>
+                        <input type="text" id="productSearch" placeholder="Procure por produtos" onkeyup="filterProducts()">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    </div>
+                </div>
+            </section>
+
+            <section class="table-card">
+                <table class="arch-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Quantidade</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stockTableBody">
+                        <tr>
+                            <td>Arduino Uno R3</td>
+                            <td>15</td>
+                            <td><span class="status-tag status-in-stock">Em estoque</span></td>
+                        </tr>
+                        <tr>
+                            <td>Placa ESP32 WROOM</td>
+                            <td>2</td>
+                            <td><span class="status-tag status-repair">Necessitam de reparo</span></td>
+                        </tr>
+                        <tr>
+                            <td>Kit Jumpers M/F (40 unid)</td>
+                            <td>10</td>
+                            <td><span class="status-tag status-loaned">Em empréstimo</span></td>
+                        </tr>
+                        <tr>
+                            <td>Óculos de Proteção (EPI)</td>
+                            <td>25</td>
+                            <td><span class="status-tag status-in-stock">Em estoque</span></td>
+                        </tr>
+                        <tr>
+                            <td>Módulo Relé 5V 2 Canais</td>
+                            <td>0</td>
+                            <td><span class="status-tag status-out">Esgotado</span></td>
+                        </tr>
+                        <tr>
+                            <td>Filamento PLA 1.75mm (1kg)</td>
+                            <td>4</td>
+                            <td><span class="status-tag status-in-stock">Em estoque</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
