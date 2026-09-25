@@ -54,7 +54,7 @@ Desenvolvido por Heitor Lisboa dos Santos, Gabriel Endrel da Silva, Pedro Jerôn
 
 ## Estrutura do projeto
 
-\`\`\`
+```
 ARCH/
 ├── venv/ # Ambiente virtual (não vai para o GitHub)
 ├── manage.py
@@ -89,7 +89,7 @@ ARCH/
 │ └── usuarios/
 └── static/
 └── css/
-\`\`\`
+```
 
 ## Pré-requisitos
 
@@ -101,10 +101,10 @@ ARCH/
 
 ### 1. Clone o repositório
 
-\`\`\`
+```
 git clone https://github.com/Heitor-Lisboa/ARCH.git
 cd ARCH
-\`\`\`
+```
 
 O comando `git clone` baixa uma cópia completa do projeto para a sua máquina.
 
@@ -112,23 +112,23 @@ O comando `git clone` baixa uma cópia completa do projeto para a sua máquina.
 
 O ambiente virtual isola as dependências do projeto do resto do sistema:
 
-\`\`\`
+```
 python -m venv ./venv
-\`\`\`
+```
 
 Ative o ambiente.
 
 No Windows:
 
-\`\`\`
+```
 venv\Scripts\activate
-\`\`\`
+```
 
 No Linux ou Mac:
 
-\`\`\`
+```
 source venv/bin/activate
-\`\`\`
+```
 
 Quando ativar, o terminal passa a mostrar `(venv)` no início da linha.
 
@@ -136,30 +136,30 @@ Quando ativar, o terminal passa a mostrar `(venv)` no início da linha.
 
 Com a venv ativada, execute:
 
-\`\`\`
+```
 pip install -r requirements.txt
-\`\`\`
+```
 
 ### 4. Crie o arquivo .env
 
 Copie o arquivo modelo e renomeie para `.env`:
 
-\`\`\`
+```
 cp .env.example .env
-\`\`\`
+```
 
 No Windows, se o comando `cp` não funcionar:
 
-\`\`\`
+```
 copy .env.example .env
-\`\`\`
+```
 
 O `.env` deve conter algo como:
 
-\`\`\`
+```
 SECRET_KEY=
 DEBUG=True
-\`\`\`
+```
 
 A `SECRET_KEY` fica vazia de propósito: cada pessoa gera a sua própria, e ela nunca é enviada para o GitHub.
 
@@ -167,32 +167,32 @@ A `SECRET_KEY` fica vazia de propósito: cada pessoa gera a sua própria, e ela 
 
 Com o ambiente ativado, execute:
 
-\`\`\`
+```
 python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
-\`\`\`
+```
 
 ### 6. Cole a chave no .env
 
 Copie a chave impressa no terminal e cole no arquivo, sem aspas e sem espaços:
 
-\`\`\`
+```
 SECRET_KEY=<chave-gerada-no-passo-anterior>
 DEBUG=True
-\`\`\`
+```
 
 ### 7. Crie o banco de dados
 
 O arquivo `db.sqlite3` também não vai para o GitHub. Cada máquina cria o seu banco local:
 
-\`\`\`
+```
 python manage.py migrate
-\`\`\`
+```
 
 ### 8. Rode o projeto
 
-\`\`\`
+```
 python manage.py runserver
-\`\`\`
+```
 
 Acesse `http://localhost:8000/` no navegador.
 
@@ -200,18 +200,18 @@ Acesse `http://localhost:8000/` no navegador.
 
 Sempre comece o trabalho buscando as mudanças que os colegas enviaram:
 
-\`\`\`
+```
 git pull
-\`\`\`
+```
 
 Depois de alterar o código, envie as mudanças:
 
-\`\`\`
+```
 git add .
 git commit -m "descrição do que foi feito"
 git pull
 git push
-\`\`\`
+```
 
 O `git pull` antes do `git push` evita conflitos: se alguém já enviou mudanças, o Git baixa e tenta juntar tudo.
 
