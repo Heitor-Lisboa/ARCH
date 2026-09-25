@@ -1,46 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARCH - Usuários Autorizados</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
+{% extends 'base.html' %}
+{% block content %}
 <body>
-
-    <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="brand">
-                <h1>ARCH</h1>
-            </div>
-
-            <div class="sidebar-search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Procure por abas">
-            </div>
-
-            <nav class="sidebar-nav">
-                <ul>
-                    <li>
-                        <a href="#"><i class="fa-solid fa-house"></i> <span>Menu inicial</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa-solid fa-right-left"></i> <span>Movimentações</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
-                    </li>
-                    <li>
-                        <a href="{% url 'estoque' %}"><i class="fa-solid fa-box"></i> <span>Estoque</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
-                    </li>
-                    <li class="active">
-                        <a href= "{% url 'autorizados' %}" ><i class="fa-solid fa-user-shield"></i> <span>Autorizados</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
-
-        <!-- Conteúdo Principal Placeholder -->
         <main class="main-content">
             <header class="topbar">
                 <h2 class="page-title">Usuários Autorizados</h2>
@@ -64,4 +24,4 @@
         </main>
     </div>
 </body>
-</html>
+{% endblock %}
