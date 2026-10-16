@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}ARCH - Estoque do LabMAKER{% endblock %}</title>
+    <title>{% block title %}ARCH - LabMAKER{% endblock %}</title>
    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
@@ -30,19 +29,30 @@
                     <li>
                         <a href="#"><i class="fa-solid fa-right-left"></i> <span>Movimentações</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
                     </li>
-                    <li>
+                    <li class="{% if request.resolver_match.url_name == 'estoque' %}active{% endif %}">
                         <a href="{% url 'estoque' %}"><i class="fa-solid fa-box"></i> <span>Estoque</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
                     </li>
-                    <li>
-                        <a href= "{% url 'autorizados' %}" ><i class="fa-solid fa-user-shield"></i> <span>Autorizados</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
+                    <li class="{% if request.resolver_match.url_name == 'autorizados' %}active{% endif %}">
+                        <a href="{% url 'autorizados' %}"><i class="fa-solid fa-user-shield"></i> <span>Autorizados</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
                     </li>
-                </ul>
+                </ul>   
             </nav>
         </aside>
         
+         <main class="main-content">
+            <header class="topbar">
+                <h2 class="page-title">{% block page_title %}Estoque do LabMAKER{% endblock %}</h2>
+                <div class="user-profile">
+                    <button class="btn-icon" title="Notificações"><i class="fa-regular fa-bell"></i></button>
+                    <div class="avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+            </header>
+
             {% block content %}
-            
-            {%  endblock %}
-        
+            {% endblock %}
+        </main>
+    </div>
 </body>
 </html>
