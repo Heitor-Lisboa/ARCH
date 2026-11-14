@@ -1,0 +1,56 @@
+/* ARCH — Tema Escuro */
+
+:root {
+    --arch-primary: #6a1b9a;
+    --arch-primary-light: #8e3fc0;
+    --arch-primary-dark: #4d1273;
+    --arch-primary-soft: rgba(106, 27, 154, 0.08);
+
+    --bg-page: #15161b;
+    --bg-sidebar: #1c1e25;
+    --bg-card: #1c1e25;
+    --bg-row: #22242c;
+    --bg-row-hover: #2c2440;
+
+    --text-strong: #f1f1f4;
+    --text-base: #c7c9d1;
+    --text-muted: #8a8d98;
+
+    --border-soft: #2d2f38;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Tags de status com contraste ajustado para fundo escuro */
+.status-in-stock {
+    background-color: rgba(43, 165, 101, 0.18);
+    color: #5fd392;
+}
+
+.status-repair {
+    background-color: rgba(214, 100, 48, 0.18);
+    color: #ff9c6b;
+}
+
+.status-loaned {
+    background-color: rgba(201, 153, 0, 0.18);
+    color: #ffd24d;
+}
+
+.status-out {
+    background-color: rgba(140, 143, 153, 0.18);
+    color: #c6c8d1;
+}
+
+.login-alert {
+    background-color: rgba(214, 100, 48, 0.18);
+    color: #ff9c6b;
+}
+
+.status-late {
+    background-color: rgba(217, 48, 37, 0.2);
+    color: #ff8a80;
+}
+
+.notif-item span { color: #ff8a80; }

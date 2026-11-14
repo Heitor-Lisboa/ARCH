@@ -1,0 +1,58 @@
+/* Home — cartões de atalho e aviso de tema */
+
+.about-card p {
+    color: var(--text-base);
+    line-height: 1.6;
+    margin-bottom: 4px;
+}
+
+.shortcut-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 20px 0 8px;
+}
+
+.shortcut-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    text-decoration: none;
+    color: var(--text-base);
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.shortcut-card:hover {
+    border-color: var(--arch-primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.shortcut-card i {
+    font-size: 24px;
+    color: var(--arch-primary);
+}
+
+.shortcut-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-strong);
+    margin: 10px 0 4px;
+}
+
+.shortcut-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.theme-note {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

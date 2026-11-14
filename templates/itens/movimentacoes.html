@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ARCH - Movimentações{% endblock %}
+{% block page_title %}Movimentações{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/itens.css' %}">{% endblock %}
+
+{% block content %}
+<section class="content-toolbar">
+    <form method="GET" action="{% url 'movimentacoes' %}" class="filtros-form">
+        <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" name="q" value="{{ q }}" placeholder="Pesquisar movimentações">
+        </div>
+
+        <select name="campo" class="filtro-select" title="Buscar em">
+            <option value="todos" {% if campo == 'todos' %}selected{% endif %}>Tudo</option>
+            <option value="item" {% if campo == 'item' %}selected{% endif %}>Itens</option>
+            <option value="categoria" {% if campo == 'categoria' %}selected{% endif %}>Categorias</option>
+            <option value="pessoa" {% if campo == 'pessoa' %}selected{% endif %}>Pessoas</option>
+        </select>
+
+        <select name="ordem" class="filtro-select" title="Ordem">
+            <option value="recentes" {% if ordem != 'antigas' %}selected{% endif %}>Mais recentes</option>
+            <option value="antigas" {% if ordem == 'antigas' %}selected{% endif %}>Mais antigas</option>
+        </select>
+
+        <button type="submit" class="btn-download"><i class="fa-solid fa-filter"></i> Filtrar</button>
+    </form>
+</section>
+
+<section class="table-card">
+    <table class="arch-table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Categoria</th>
+                <th>Qtd.</th>
+                <th>Tipo</th>
+                <th>Pessoa</th>
+                <th>Data/Hora</th>
+                <th>Devolução prevista</th>
+                <th>Situação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mov in movimentacoes %}
+            <tr>
+                <td>{{ mov.item.nome }}</td>
+                <td>{{ mov.item.categoria.nome }}</td>
+                <td>{{ mov.quantidade }}</td>
+                <td>
+                    <span class="status-tag {% if mov.tipo == 'E' %}status-in-stock{% else %}status-loaned{% endif %}">
+                        {{ mov.get_tipo_display }}{% if mov.emprestimo_id %} (devolução){% endif %}
+                    </span>
+                </td>
+                <td>{{ mov.pessoa|default:"—" }}</td>
+                <td>{{ mov.data_hora|date:"d/m/Y H:i" }}</td>
+                <td>{% if mov.data_prevista %}{{ mov.data_prevista|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+                <td>
+                    {% if mov.situacao == 'Atrasado' %}
+                        <span class="status-tag status-late">Atrasado {{ mov.dias_atraso }} dia{{ mov.dias_atraso|pluralize }}</span>
+                    {% elif mov.situacao == 'Em dia' %}
+                        <span class="status-tag status-loaned">Em dia</span>
+                    {% elif mov.situacao == 'Devolvido' %}
+                        <span class="status-tag status-in-stock">Devolvido</span>
+                    {% else %}—{% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" style="text-align: center;">Nenhuma movimentação encontrada.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

@@ -1,0 +1,153 @@
+/* Usuários — login e tela de usuários */
+
+/* Tela de login */
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-page);
+    padding: 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 380px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: 36px 32px;
+}
+
+.login-brand {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.login-brand h1 {
+    background: linear-gradient(135deg, var(--arch-primary) 0%, var(--arch-primary-light) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.login-brand p {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin: 2px 0;
+}
+
+.login-field {
+    margin-bottom: 16px;
+}
+
+.login-field > label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-strong);
+    margin-bottom: 6px;
+}
+
+.login-input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-page);
+    padding: 0 12px;
+    transition: border-color var(--transition);
+}
+
+.login-input-group:focus-within {
+    border-color: var(--arch-primary);
+}
+
+.login-input-group i {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.login-input-group input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 11px 0;
+    font-size: 14px;
+    color: var(--text-base);
+}
+
+.login-eye-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 14px;
+    padding: 4px;
+}
+
+.login-remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-base);
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.login-submit {
+    width: 100%;
+    background-color: var(--arch-primary);
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color var(--transition);
+}
+
+.login-submit:hover {
+    background-color: var(--arch-primary-dark);
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.login-alert {
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+/* Tela de usuários (placeholder) */
+
+.placeholder-box i {
+    color: var(--arch-primary);
+}
+
+.placeholder-box h3 {
+    color: var(--text-strong);
+}
+
+.placeholder-box p {
+    color: var(--text-muted);
+}

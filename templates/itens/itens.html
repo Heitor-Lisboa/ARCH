@@ -1,26 +1,34 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}ARCH - Estoque do LabMAKER{% endblock %}
 {% block page_title %}Estoque do LabMAKER{% endblock %}
 
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/itens.css' %}">{% endblock %}
+{% block extra_js %}<script src="{% static 'js/itens.js' %}"></script>{% endblock %}
+
 {% block content %}
 <section class="content-toolbar">
     <div class="action-buttons">
-        <button class="btn btn-download">
-            <i class="fa-solid fa-download"></i> Baixar tabela
-        </button>
+        <a href="{% url 'exportar_estoque' %}?q={{ query|urlencode }}&categoria={{ categoria_selecionada }}" class="btn-download">
+            <i class="fa-solid fa-file-excel"></i> Baixar tabela
+        </a>
     </div>
 
-    <!-- Formulário de busca via GET -->
-    <div class="search-box-container">
-        <form method="GET" action="{% url 'estoque' %}" class="search-input-wrapper">
-            <i class="fa-solid fa-bars filter-icon"></i>
-            <input type="text" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Procure por produtos">
-            <button type="submit" style="background:none; border:none; cursor:pointer;">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            </button>
-        </form>
-    </div>
+    <!-- Filtros via GET: nome/código e categoria -->
+    <form method="GET" action="{% url 'estoque' %}" id="filtrosEstoque" class="filtros-form">
+        <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" name="q" value="{{ query }}" placeholder="Procure por produtos">
+        </div>
+
+        <select name="categoria" id="filtroCategoria" class="filtro-select" title="Filtrar por categoria">
+            <option value="">Todas as categorias</option>
+            {% for c in categorias %}
+            <option value="{{ c.id }}" {% if categoria_selecionada == c.id|stringformat:"s" %}selected{% endif %}>{{ c.nome }}</option>
+            {% endfor %}
+        </select>
+    </form>
 </section>
 
 <section class="table-card">
@@ -28,6 +36,7 @@
         <thead>
             <tr>
                 <th>Nome</th>
+                <th>Categoria</th>
                 <th>Quantidade</th>
                 <th>Status</th>
             </tr>
@@ -36,10 +45,11 @@
             {% for item in itens %}
             <tr>
                 <td>{{ item.nome }}</td>
+                <td>{{ item.categoria.nome }}</td>
                 <td>{{ item.quantidade_disponivel }}</td>
                 <td>
-                    <!-- Aplicação dinâmica da classe de status com base na escolha (CHOICE) do model -->
-                    <span class="status-tag 
+                    <!-- Classe de status conforme a escolha (CHOICE) do model -->
+                    <span class="status-tag
                         {% if item.status == 'ESTOQUE' %}status-in-stock
                         {% elif item.status == 'BAIXO' %}status-repair
                         {% elif item.status == 'REPARO' %}status-repair
@@ -51,7 +61,7 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="3" style="text-align: center;">Nenhum item encontrado no estoque.</td>
+                <td colspan="4" style="text-align: center;">Nenhum item encontrado no estoque.</td>
             </tr>
             {% endfor %}
         </tbody>

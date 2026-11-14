@@ -5,9 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ARCH - LabMAKER{% endblock %}</title>
-   
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+
+    <!-- O tema vem por último para suas cores prevalecerem -->
+    <link rel="stylesheet" id="theme-stylesheet"
+          href="{% static 'css/themes/light.css' %}"
+          data-light-url="{% static 'css/themes/light.css' %}"
+          data-dark-url="{% static 'css/themes/dark.css' %}">
+    <script src="{% static 'js/base.js' %}"></script>
 </head>
 <body>
     <div class="app-container">
@@ -18,33 +26,33 @@
 
             <div class="sidebar-search">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Procure por abas">
+                <input type="text" id="sidebarSearch" placeholder="Procure por abas" autocomplete="off">
             </div>
 
             <nav class="sidebar-nav">
                 <ul>
-                    <li>
-                        <a href="#"><i class="fa-solid fa-house"></i> <span>Menu inicial</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
+                    <li class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                        <a href="{% url 'home' %}"><i class="fa-solid fa-house"></i> <span>Menu inicial</span></a>
                     </li>
-                    <li>
-                        <a href="#"><i class="fa-solid fa-right-left"></i> <span>Movimentações</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
+                    <li class="{% if request.resolver_match.url_name == 'movimentacoes' %}active{% endif %}">
+                        <a href="{% url 'movimentacoes' %}"><i class="fa-solid fa-right-left"></i> <span>Movimentações</span></a>
                     </li>
                     <li class="{% if request.resolver_match.url_name == 'estoque' %}active{% endif %}">
-                        <a href="{% url 'estoque' %}"><i class="fa-solid fa-box"></i> <span>Estoque</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
+                        <a href="{% url 'estoque' %}"><i class="fa-solid fa-box"></i> <span>Estoque</span></a>
                     </li>
-                    <li class="{% if request.resolver_match.url_name == 'autorizados' %}active{% endif %}">
-                        <a href="{% url 'autorizados' %}"><i class="fa-solid fa-user-shield"></i> <span>Autorizados</span> <i class="fa-solid fa-chevron-right arrow"></i></a>
+                    <li class="{% if request.resolver_match.url_name == 'usuarios' %}active{% endif %}">
+                        <a href="{% url 'usuarios' %}"><i class="fa-solid fa-user-shield"></i> <span>usuarios</span></a>
                     </li>
-                </ul>   
+                </ul>
             </nav>
         </aside>
-        
-         <main class="main-content">
+
+        <main class="main-content">
             <header class="topbar">
                 <h2 class="page-title">{% block page_title %}Estoque do LabMAKER{% endblock %}</h2>
                 <div class="user-profile">
-        
-<label class="switch" for="switch">
+
+<label class="switch" for="switch" title="Alternar tema claro/escuro">
     <input id="switch" type="checkbox" class="circle">
 
     <svg
@@ -60,9 +68,30 @@
         <span class="dot"></span>
     </div>
 </label>
-                    <button class="btn-icon" title="Notificações"><i class="fa-regular fa-bell"></i></button>
+
+                    <div class="notif">
+                        <button type="button" class="btn-icon notif-btn" id="notifBtn" title="Notificações" aria-expanded="false">
+                            <i class="fa-regular fa-bell"></i>
+                            {% if notificacoes_total %}<span class="notif-badge">{{ notificacoes_total }}</span>{% endif %}
+                        </button>
+                        <div class="notif-panel" id="notifPanel" hidden>
+                            <div class="notif-title">Devoluções em atraso</div>
+                            {% for m in notificacoes_atraso %}
+                            <a href="{% url 'movimentacoes' %}?q={{ m.emprestado_a|urlencode }}&campo=pessoa" class="notif-item">
+                                <strong>{{ m.item.nome }}</strong> ({{ m.pendente }} un.)
+                                <span>{{ m.emprestado_a }} &middot; {{ m.dias_atraso }} dia{{ m.dias_atraso|pluralize }} de atraso
+                                (previsto {{ m.data_prevista|date:"d/m/Y" }})</span>
+                            </a>
+                            {% empty %}
+                            <div class="notif-empty">Nenhuma devolução em atraso.</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <a href="{% url 'logout' %}" class="btn-icon" title="Sair">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </a>
                     <div class="avatar">
-                            <i class="fa-solid fa-user"></i>
+                        <i class="fa-solid fa-user"></i>
                     </div>
                 </div>
             </header>
@@ -71,5 +100,7 @@
             {% endblock %}
         </main>
     </div>
+
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ARCH - Menu inicial{% endblock %}
+{% block page_title %}Menu inicial{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+
+{% block content %}
+<section class="table-card about-card" style="justify-content: flex-start;">
+    <h3 style="margin-bottom: 8px; color: var(--text-strong);">
+        <i class="fa-solid fa-diagram-project" style="color: var(--arch-primary); margin-right: 8px;"></i>
+        Sobre o ARCH
+    </h3>
+    <p>
+        O ARCH é o sistema de controle de estoque do LabMAKER, do IFRN — Campus São Gonçalo do Amarante.
+        Ele organiza o cadastro de itens, registra entradas, saídas e empréstimos, e mantém um histórico
+        de movimentações do laboratório, com acesso restrito a bolsistas, coordenadores e demais usuários
+        autorizados.
+    </p>
+
+    <div class="shortcut-grid">
+        <a href="{% url 'estoque' %}" class="shortcut-card">
+            <i class="fa-solid fa-box"></i>
+            <h3>Estoque</h3>
+            <p>Consulte os itens cadastrados e a disponibilidade de cada um.</p>
+        </a>
+        <a href="{% url 'movimentacoes' %}" class="shortcut-card">
+            <i class="fa-solid fa-right-left"></i>
+            <h3>Movimentações</h3>
+            <p>Veja o histórico de entradas e saídas registradas no laboratório.</p>
+        </a>
+        <a href="{% url 'usuarios' %}" class="shortcut-card">
+            <i class="fa-solid fa-user-shield"></i>
+            <h3>Autorizados</h3>
+            <p>Lista de bolsistas e coordenadores com acesso liberado.</p>
+        </a>
+    </div>
+
+    <p class="theme-note">
+        <i class="fa-solid fa-circle-half-stroke"></i>
+        Use o botão no topo da tela para alternar entre os temas claro e escuro.
+    </p>
+</section>
+{% endblock %}

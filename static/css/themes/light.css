@@ -1,0 +1,56 @@
+/* ARCH — Tema Claro */
+
+:root {
+    --arch-primary: #6a1b9a;
+    --arch-primary-light: #8e3fc0;
+    --arch-primary-dark: #4d1273;
+    --arch-primary-soft: rgba(106, 27, 154, 0.08);
+
+    --bg-page: #eef0f3;
+    --bg-sidebar: #ffffff;
+    --bg-card: #ffffff;
+    --bg-row: #f7f7f9;
+    --bg-row-hover: #efe6f6;
+
+    --text-strong: #1c1d21;
+    --text-base: #3c3e45;
+    --text-muted: #80838c;
+
+    --border-soft: #e3e4e8;
+
+    --shadow-sm: 0 1px 3px rgba(20, 20, 30, 0.06);
+    --shadow-md: 0 8px 24px rgba(20, 20, 30, 0.08);
+}
+
+/* Tags de status */
+.status-in-stock {
+    background-color: #d9f0e2;
+    color: #1b7a44;
+}
+
+.status-repair {
+    background-color: #fde3d8;
+    color: #b1491f;
+}
+
+.status-loaned {
+    background-color: #fff3cd;
+    color: #8a6400;
+}
+
+.status-out {
+    background-color: #e7e8ec;
+    color: #5b5e68;
+}
+
+.status-late {
+    background-color: #fbdcdc;
+    color: #b3261e;
+}
+
+.login-alert {
+    background-color: #fde3d8;
+    color: #b1491f;
+}
+
+.notif-item span { color: #d93025; }
