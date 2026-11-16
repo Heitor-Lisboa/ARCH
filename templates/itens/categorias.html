@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ARCH - Categorias{% endblock %}
+{% block page_title %}Categorias{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/itens.css' %}">{% endblock %}
+
+{% block content %}
+<section class="content-toolbar">
+    <div class="action-buttons">
+        {% if perm.gerenciar_itens %}
+        <a href="{% url 'categoria_nova' %}" class="btn-download"><i class="fa-solid fa-plus"></i> Cadastrar categoria</a>
+        {% endif %}
+        <a href="{% url 'estoque' %}" class="btn-secondary"><i class="fa-solid fa-arrow-left"></i> Voltar ao estoque</a>
+    </div>
+</section>
+
+<section class="table-card">
+    <table class="arch-table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Itens</th>
+                {% if perm.gerenciar_itens %}<th>Ações</th>{% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in categorias %}
+            <tr>
+                <td>{{ c.nome }}</td>
+                <td>{{ c.descricao|default:"—" }}</td>
+                <td>{{ c.total }}</td>
+                {% if perm.gerenciar_itens %}
+                <td class="row-actions">
+                    <a href="{% url 'categoria_editar' c.pk %}" title="Editar"><i class="fa-solid fa-pen"></i></a>
+                    <a href="{% url 'categoria_excluir' c.pk %}" title="Excluir" class="danger"><i class="fa-solid fa-trash"></i></a>
+                </td>
+                {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center;">Nenhuma categoria cadastrada.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

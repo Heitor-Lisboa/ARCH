@@ -1,19 +1,56 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}ARCH - usuarios{% endblock %}
-{% block page_title %}usuarios{% endblock %}
+{% block title %}ARCH - Autorizados{% endblock %}
+{% block page_title %}Autorizados{% endblock %}
 
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/usuarios.css' %}">{% endblock %}
 
 {% block content %}
-<section class="table-card" style="display: flex; justify-content: center; align-items: center; text-align: center; min-height: 300px;">
-    <div class="placeholder-box">
-        <i class="fa-solid fa-id-card-clip" style="font-size: 48px; margin-bottom: 15px;"></i>
-        <h3>Verificação via LOGIN</h3>
-        <p style="margin-top: 8px;">
-            A lista de usuários autorizados (bolsistas de projetos ativos e coordenadores do LabMAKER).
-        </p>
+<section class="content-toolbar">
+    <div class="action-buttons">
+        {% if perm.gerenciar_usuarios %}
+        <a href="{% url 'usuario_novo' %}" class="btn-download"><i class="fa-solid fa-user-plus"></i> Cadastrar usuário</a>
+        {% endif %}
     </div>
+</section>
+
+<section class="table-card">
+    <table class="arch-table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Login</th>
+                <th>Matrícula</th>
+                <th>Tipo</th>
+                <th>Situação</th>
+                {% if perm.gerenciar_usuarios %}<th>Ações</th>{% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for u, tipo in linhas %}
+            <tr>
+                <td>{{ u.first_name|default:u.username }}</td>
+                <td>{{ u.username }}</td>
+                <td>{{ u.perfil.matricula|default:"—" }}</td>
+                <td>{{ tipo }}</td>
+                <td>
+                    {% if u.is_active %}<span class="status-tag status-in-stock">Ativo</span>
+                    {% else %}<span class="status-tag status-out">Inativo</span>{% endif %}
+                </td>
+                {% if perm.gerenciar_usuarios %}
+                <td class="row-actions">
+                    <a href="{% url 'usuario_editar' u.pk %}" title="Editar"><i class="fa-solid fa-pen"></i></a>
+                    {% if u != user %}
+                    <a href="{% url 'usuario_excluir' u.pk %}" title="Excluir" class="danger"><i class="fa-solid fa-trash"></i></a>
+                    {% endif %}
+                </td>
+                {% endif %}
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" style="text-align: center;">Nenhum usuário cadastrado.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </section>
 {% endblock %}

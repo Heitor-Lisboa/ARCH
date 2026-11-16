@@ -10,7 +10,11 @@
 {% block content %}
 <section class="content-toolbar">
     <div class="action-buttons">
-        <a href="{% url 'exportar_estoque' %}?q={{ query|urlencode }}&categoria={{ categoria_selecionada }}" class="btn-download">
+        {% if perm.gerenciar_itens %}
+        <a href="{% url 'item_novo' %}" class="btn-download"><i class="fa-solid fa-plus"></i> Cadastrar item</a>
+        {% endif %}
+        <a href="{% url 'categorias' %}" class="btn-secondary"><i class="fa-solid fa-tags"></i> Categorias</a>
+        <a href="{% url 'exportar_estoque' %}?q={{ query|urlencode }}&campo={{ campo }}&categoria={{ categoria_selecionada }}" class="btn-secondary">
             <i class="fa-solid fa-file-excel"></i> Baixar tabela
         </a>
     </div>
@@ -19,8 +23,14 @@
     <form method="GET" action="{% url 'estoque' %}" id="filtrosEstoque" class="filtros-form">
         <div class="search-input-wrapper">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" name="q" value="{{ query }}" placeholder="Procure por produtos">
+            <input type="text" name="q" value="{{ query }}" placeholder="Pesquisar produtos">
         </div>
+
+        <select name="campo" class="filtro-select" title="Buscar em">
+            <option value="todos" {% if campo == 'todos' %}selected{% endif %}>Tudo</option>
+            <option value="nome" {% if campo == 'nome' %}selected{% endif %}>Nome</option>
+            <option value="id" {% if campo == 'id' %}selected{% endif %}>ID</option>
+        </select>
 
         <select name="categoria" id="filtroCategoria" class="filtro-select" title="Filtrar por categoria">
             <option value="">Todas as categorias</option>
@@ -28,6 +38,8 @@
             <option value="{{ c.id }}" {% if categoria_selecionada == c.id|stringformat:"s" %}selected{% endif %}>{{ c.nome }}</option>
             {% endfor %}
         </select>
+
+        <button type="submit" class="btn-download"><i class="fa-solid fa-filter"></i> Filtrar</button>
     </form>
 </section>
 
@@ -37,8 +49,9 @@
             <tr>
                 <th>Nome</th>
                 <th>Categoria</th>
-                <th>Quantidade</th>
+                <th>Disponível / Total</th>
                 <th>Status</th>
+                {% if perm.gerenciar_itens %}<th>Ações</th>{% endif %}
             </tr>
         </thead>
         <tbody id="stockTableBody">
@@ -46,9 +59,8 @@
             <tr>
                 <td>{{ item.nome }}</td>
                 <td>{{ item.categoria.nome }}</td>
-                <td>{{ item.quantidade_disponivel }}</td>
+                <td>{{ item.quantidade_disponivel }} / {{ item.quantidade_total }}</td>
                 <td>
-                    <!-- Classe de status conforme a escolha (CHOICE) do model -->
                     <span class="status-tag
                         {% if item.status == 'ESTOQUE' %}status-in-stock
                         {% elif item.status == 'BAIXO' %}status-repair
@@ -58,10 +70,16 @@
                         {{ item.get_status_display }}
                     </span>
                 </td>
+                {% if perm.gerenciar_itens %}
+                <td class="row-actions">
+                    <a href="{% url 'item_editar' item.codigo %}" title="Editar"><i class="fa-solid fa-pen"></i></a>
+                    <a href="{% url 'item_excluir' item.codigo %}" title="Excluir" class="danger"><i class="fa-solid fa-trash"></i></a>
+                </td>
+                {% endif %}
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4" style="text-align: center;">Nenhum item encontrado no estoque.</td>
+                <td colspan="5" style="text-align: center;">Nenhum item encontrado no estoque.</td>
             </tr>
             {% endfor %}
         </tbody>

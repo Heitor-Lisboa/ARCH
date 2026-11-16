@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ARCH - {{ titulo }}{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+
+{% block extra_js %}<script src="{% static 'js/forms.js' %}"></script>{% endblock %}
+
+{% block content %}
+<section class="form-card">
+    <form method="POST" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="msg msg-error">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        {% for campo in form %}
+        <div class="form-field" id="campo-{{ campo.name }}">
+            {% if campo.field.widget.input_type == 'checkbox' %}
+                <label class="form-check">{{ campo }} {{ campo.label }}</label>
+            {% else %}
+                <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+                {{ campo }}
+            {% endif %}
+            {% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}
+            {% for erro in campo.errors %}<span class="form-error">{{ erro }}</span>{% endfor %}
+        </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <a href="{{ voltar }}" class="btn-secondary">Cancelar</a>
+            <button type="submit" class="btn-download"><i class="fa-solid fa-floppy-disk"></i> Salvar</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

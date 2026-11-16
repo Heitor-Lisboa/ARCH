@@ -8,6 +8,12 @@
 
 {% block content %}
 <section class="content-toolbar">
+    <div class="action-buttons">
+        {% if perm.registrar_movimentacao %}
+        <a href="{% url 'movimentacao_nova' %}" class="btn-download"><i class="fa-solid fa-plus"></i> Cadastrar movimentação</a>
+        {% endif %}
+    </div>
+
     <form method="GET" action="{% url 'movimentacoes' %}" class="filtros-form">
         <div class="search-input-wrapper">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -42,6 +48,7 @@
                 <th>Data/Hora</th>
                 <th>Devolução prevista</th>
                 <th>Situação</th>
+                {% if perm.registrar_movimentacao %}<th>Ações</th>{% endif %}
             </tr>
         </thead>
         <tbody>
@@ -67,10 +74,19 @@
                         <span class="status-tag status-in-stock">Devolvido</span>
                     {% else %}—{% endif %}
                 </td>
+                {% if perm.registrar_movimentacao %}
+                <td class="row-actions">
+                    {% if mov.pendente > 0 %}
+                    <a href="{% url 'movimentacao_nova' %}?devolver={{ mov.pk }}" title="Registrar devolução"><i class="fa-solid fa-rotate-left"></i></a>
+                    {% endif %}
+                    <a href="{% url 'movimentacao_editar' mov.pk %}" title="Editar"><i class="fa-solid fa-pen"></i></a>
+                    <a href="{% url 'movimentacao_excluir' mov.pk %}" title="Excluir" class="danger"><i class="fa-solid fa-trash"></i></a>
+                </td>
+                {% endif %}
             </tr>
             {% empty %}
             <tr>
-                <td colspan="8" style="text-align: center;">Nenhuma movimentação encontrada.</td>
+                <td colspan="9" style="text-align: center;">Nenhuma movimentação encontrada.</td>
             </tr>
             {% endfor %}
         </tbody>

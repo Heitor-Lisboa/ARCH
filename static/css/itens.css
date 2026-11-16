@@ -1,0 +1,14 @@
+/* Estoque, categorias e movimentações (mesmo padrão de tabela e barra de ferramentas nas três) */
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Primeira coluna alinhada à esquerda, igual às células */
+.arch-table th:first-child {
+    text-align: left;
+    padding-left: 20px;
+}

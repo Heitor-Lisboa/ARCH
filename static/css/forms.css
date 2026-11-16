@@ -1,0 +1,170 @@
+/* ARCH — formulários, botões de ação, mensagens e ícones de linha (usado em todas as páginas) */
+
+/* Mensagens (sucesso / erro) */
+.messages { margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }
+
+.msg {
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.msg .errorlist { list-style: none; }
+
+/* Formulário */
+.form-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: 28px;
+    max-width: 640px;
+}
+
+.form-field { margin-bottom: 18px; }
+.form-field[hidden] { display: none; }
+
+.form-field > label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-strong);
+    margin-bottom: 6px;
+}
+
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="password"],
+.form-field input[type="number"],
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-page);
+    color: var(--text-base);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color var(--transition);
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus { border-color: var(--arch-primary); }
+
+.form-field input:disabled,
+.form-field select:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-base);
+    cursor: pointer;
+}
+
+.form-field small { display: block; margin-top: 4px; font-size: 12px; color: var(--text-muted); }
+.form-error { display: block; margin-top: 4px; font-size: 13px; font-weight: 600; }
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.confirm-text { font-size: 15px; color: var(--text-base); line-height: 1.6; }
+.confirm-text strong { color: var(--text-strong); }
+
+/* Botão secundário (Cancelar, Categorias, Baixar tabela...) */
+.btn-secondary {
+    background-color: var(--bg-card);
+    color: var(--text-base);
+    border: 1px solid var(--border-soft);
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: border-color var(--transition), color var(--transition);
+}
+
+.btn-secondary:hover { border-color: var(--arch-primary); color: var(--arch-primary); }
+
+.btn-danger { background-color: #c62828; }
+.btn-danger:hover { background-color: #9f1f1f; }
+
+/* Botões de ação dentro das tabelas (editar / excluir / devolver) */
+.row-actions { white-space: nowrap; }
+
+.row-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.row-actions a:hover { background-color: var(--arch-primary-soft); color: var(--arch-primary); }
+.row-actions a.danger:hover { background-color: rgba(217, 48, 37, 0.12); color: #d93025; }
+
+/* Campo numérico com botões − e + (no lugar das setinhas padrão do navegador) */
+.number-field {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-page);
+    overflow: hidden;
+    transition: border-color var(--transition);
+}
+
+.number-field:focus-within { border-color: var(--arch-primary); }
+
+.form-field .number-field input[type="number"] {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    text-align: center;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.number-field input[type="number"]::-webkit-outer-spin-button,
+.number-field input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.number-btn {
+    width: 44px;
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.number-btn:hover:not(:disabled) { background-color: var(--arch-primary-soft); color: var(--arch-primary); }
+.number-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Tabelas: primeira coluna alinhada à esquerda (cabeçalho junto do conteúdo) em todas as telas */
+.arch-table th:first-child {
+    text-align: left;
+    padding-left: 20px;
+}

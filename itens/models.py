@@ -25,7 +25,7 @@ class Item(models.Model):
         ('ESGOTADO', 'Esgotado'),
     ]
 
-    codigo = models.CharField(max_length=30, unique=True)
+    codigo = models.CharField(max_length=30, unique=True, blank=True, help_text='Deixe em branco para gerar automaticamente.')
     nome = models.CharField(max_length=100)
     descricao = models.TextField(blank=True, null=True)
 
@@ -40,19 +40,33 @@ class Item(models.Model):
     def __str__(self):
         return f"{self.nome} ({self.codigo})"
 
+    def _soma(self, tipo, ignorar=None):
+        movs = self.movimentacoes.filter(tipo=tipo)
+        if ignorar:
+            movs = movs.exclude(pk=ignorar)
+        return movs.aggregate(s=Sum('quantidade'))['s'] or 0
+
+    @property
+    def emprestado(self):
+        """Unidades que saíram e ainda não voltaram."""
+        return self._soma('S') - self._soma('E') if self.pk else 0
+
+    def disponivel_sem(self, mov_pk=None):
+        """Quanto estaria livre se a saída `mov_pk` não existisse (usado ao editar um empréstimo)."""
+        return self.quantidade_total - (self._soma('S', mov_pk) - self._soma('E'))
+
     def save(self, *args, **kwargs):
-        if self.pk:
-            total = lambda t: self.movimentacoes.filter(tipo=t).aggregate(s=Sum('quantidade'))['s'] or 0
-            emprestado = total('S') - total('E')
-            self.quantidade_disponivel = max(self.quantidade_total - emprestado, 0)
-        else:
-            self.quantidade_disponivel = self.quantidade_total
+        self.quantidade_disponivel = max(self.quantidade_total - self.emprestado, 0)
 
         if self.quantidade_disponivel == 0:
             self.status = 'ESGOTADO'
         elif self.status == 'ESGOTADO':
             self.status = 'ESTOQUE'
         super().save(*args, **kwargs)
+
+        if not self.codigo:  # código automático: ITM-0001, ITM-0002...
+            self.codigo = f'ITM-{self.pk:04d}'
+            super().save(update_fields=['codigo'])
 
 
 class Movimentacao(models.Model):
@@ -115,27 +129,41 @@ class Movimentacao(models.Model):
         return self.emprestado_a or (self.emprestimo.emprestado_a if self.emprestimo_id else '')
 
     def clean(self):
-        if not self.item_id:
+        if not self.item_id or self.quantidade is None:
             return
+
         if self.tipo == self.SAIDA:
             if not self.emprestado_a:
                 raise ValidationError({'emprestado_a': 'Informe quem está levando o item.'})
             if not self.prazo_dias:
                 raise ValidationError({'prazo_dias': 'Escolha o prazo de devolução.'})
-            if not self.pk and self.quantidade > self.item.quantidade_disponivel:
-                raise ValidationError({
-                    'quantidade': f'Só há {self.item.quantidade_disponivel} unidade(s) disponível(is).'
-                })
+
+            livre = self.item.disponivel_sem(self.pk)
+            if self.quantidade > livre:
+                raise ValidationError({'quantidade': f'Só há {max(livre, 0)} unidade(s) disponível(is).'})
+
+            if self.pk:
+                devolvido = self.devolucoes.aggregate(s=Sum('quantidade'))['s'] or 0
+                if self.quantidade < devolvido:
+                    raise ValidationError({'quantidade': f'{devolvido} unidade(s) deste empréstimo já foram devolvidas.'})
+
         elif self.tipo == self.ENTRADA:
             if not self.emprestimo_id:
                 raise ValidationError({'emprestimo': 'Escolha o empréstimo que está sendo devolvido.'})
             if self.emprestimo.item_id != self.item_id:
                 raise ValidationError({'emprestimo': 'Esse empréstimo é de outro item.'})
 
+            ja_devolvido = self.emprestimo.devolucoes.exclude(pk=self.pk).aggregate(s=Sum('quantidade'))['s'] or 0
+            falta = self.emprestimo.quantidade - ja_devolvido
+            if self.quantidade > falta:
+                raise ValidationError({'quantidade': f'Só faltam {falta} unidade(s) para devolver neste empréstimo.'})
+
     def save(self, *args, **kwargs):
         if self.tipo == self.SAIDA and self.prazo_dias:
             base = timezone.localtime(self.data_hora).date() if self.data_hora else timezone.localdate()
             self.data_prevista = base + timedelta(days=self.prazo_dias)
+        else:
+            self.data_prevista = None
         super().save(*args, **kwargs)
 
 
